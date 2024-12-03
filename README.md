@@ -34,7 +34,7 @@ This image is loaded on an instance to regulate the variables defined in the che
 * OpenPLC dashboard opens  as shown below:
 ![Figure 2: OpenPLC dashboard](PLCdashboard.png)
 * Navtigate to the Slave devices section of the dashboard within which you need to set up the IP address of the Modbus Slaves of the chemical plant.
-![Figure 2: OpenPLC Slaves](Slaves.png)
+![Figure 3: OpenPLC Slaves](Slaves.png)
 * Double click on each of the slave devices and change their IP addresses to the IP address of the Chemical Plant instance (Not the Floating IP. Make sure not to use the floating IP.)
 * Then return to the dashboard and restart the OpenPLC runtime.
 * You must see the slave devices getting conected and the corresponding logs from the dashboard.
@@ -48,4 +48,20 @@ Download this git repository and run the python file `measurements.py`. This wil
 * Defining attacks:
     * Integrity attack: There are six variables being sent to the modbus slaves from the master. All of these can be manipulated among which the most significant one is the pressure set-point. The effect of changing these variables can be imitated using the command `python write_PLC.py 65535 65535 0 0`.
     * Availablity: Among these six variables, some of them, if not available can induce instability. For example if you cut the transmission of all variables except feed1 and feed 2, the system will reach an unstable state. This can be imitated using running only the `feed1.py` and `feed2.py` codes present in the chemical plant instance after restarting the simulation.
+
+
+### HMI
+
+In the future releases, to incorporate more realistic nature to the industrial OT applications, the attack will be through the Human Machine Interface present in the network. Ideally the HMI host only network should be seperated from the PLC and the chemical plant. But in this work for the time being we show steps to deploy an HMI on the same host only network as the PLC and plant so that the measurements and actuations can be seen to a human operator.
+* Open the [image description page](https://cloud.isislab.vanderbilt.edu/ngdetails/OS::Glance::Image/bb1ed89d-bef2-403b-b672-2f3f058d2103).
+* Lauch the instance with standard configuration.
+* Add a floating IP and disable the port security to enable the SSH.
+* Navigate from any browser within the VPN to the page `http://<floating IP of HMI instance>:9090/ScadaBR`.
+* Use the useid and password as admin and admin respectively.
+*  The following page will show up:
+    *![Figure 2: OpenPLC Slaves](ScadaBR.png)
+* Navigate to the `Data Sources` icon on the tab and click it open.
+* You can now see the IP address of the PLC to which the ScadaBR is connected to. 
+* Make sure you press the edit button and type in the PLC to which you want to connect the HMI too.
+* Save the file and keep experimenting.
 
